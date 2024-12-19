@@ -10,9 +10,10 @@ export default function Home() {
     const cookies = new Cookies();
     const token = cookies.get("TOKEN");
     const [userIp, setUserIp] = useState("");
+    const [user, setUser] = useState([]);
 
-    // get logged in user IP address
-    const getUserIp = {
+    // get logged in user info
+    const getUserInfo = {
         method: "get",
         url: `${APIURL}auth-endpoint`,
         headers: {
@@ -21,9 +22,10 @@ export default function Home() {
     };
 
     useEffect(() => {
-        axios(getUserIp)
+        axios(getUserInfo)
         .then((result) => {
             setUserIp(result.data.ip);
+            setUser(result.data.user);
         })
         .catch((error) => {
             error = new Error();
@@ -39,13 +41,14 @@ export default function Home() {
     return (
         <>
             <div className="header">
-                <h1>Geo & IP Info</h1>
+                <h1>Geolocation & IP Info</h1>
                 <button onClick={logout}>Logout</button>
             </div>
             <div className="app">
                 <div className="info-container">
                     <Info
                         userIp={userIp}
+                        user={user}
                     />
                 </div>
             </div>
